@@ -12,6 +12,6 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   rules: {
-    'prettier/prettier': ['warn', { singleQuote: true }],
+    'prettier/prettier': ['warn', { singleQuote: true, arrowParens: 'avoid' }],
   },
 };
