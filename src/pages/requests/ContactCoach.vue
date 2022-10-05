@@ -32,7 +32,7 @@ export default {
 
       if (
         this.email === '' ||
-        this.email.includes('@') ||
+        !this.email.includes('@') ||
         this.message === ''
       ) {
         this.formIsValid = false;
@@ -42,6 +42,15 @@ export default {
       this.validateForm();
 
       if (!this.formIsValid) return;
+
+      const contactData = {
+        coachId: this.$route.params.id,
+        email: this.email,
+        message: this.message,
+      };
+
+      this.$store.dispatch('requests/contactCoach', contactData);
+      this.$router.replace('/coaches');
     },
   },
 };
