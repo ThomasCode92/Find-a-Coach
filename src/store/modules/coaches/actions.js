@@ -4,12 +4,14 @@ const FIREBASE_URL =
 export default {
   async loadCoaches(context) {
     const response = await fetch(FIREBASE_URL + '.json');
+    const responseData = await response.json();
 
     if (!response.ok) {
-      // error...
-    }
+      const errorMessage = responseData.message || 'Failed to fetch!';
+      const error = new Error(errorMessage);
 
-    const responseData = await response.json();
+      throw error;
+    }
 
     const coaches = [];
 
