@@ -1,4 +1,33 @@
+const FIREBASE_URL =
+  'https://vue-find-coach-b80f7-default-rtdb.firebaseio.com/coaches';
+
 export default {
+  async loadCoaches(context) {
+    const response = await fetch(FIREBASE_URL + '.json');
+
+    if (!response.ok) {
+      // error...
+    }
+
+    const responseData = await response.json();
+
+    const coaches = [];
+
+    for (const key in responseData) {
+      const coach = {
+        id: key,
+        firstName: responseData[key].firstName,
+        lastName: responseData[key].lastName,
+        description: responseData[key].description,
+        areas: responseData[key].areas,
+        hourlyRate: responseData[key].hourlyRate,
+      };
+
+      coaches.push(coach);
+    }
+
+    context.commit('setCoaches', coaches);
+  },
   async registerCoach(context, data) {
     const userId = context.rootGetters.userId;
     const coachData = {
@@ -9,9 +38,7 @@ export default {
       hourlyRate: data.rate,
     };
 
-    const FIREBASE_URL = `https://vue-find-coach-b80f7-default-rtdb.firebaseio.com/coaches/${userId}.json`;
-
-    const response = await fetch(FIREBASE_URL, {
+    const response = await fetch(FIREBASE_URL + `/${userId}.json`, {
       method: 'PUT',
       body: JSON.stringify(coachData),
     });

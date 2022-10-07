@@ -5,7 +5,7 @@
   <section>
     <base-card>
       <div class="controls">
-        <base-button mode="outline">Refresh</base-button>
+        <base-button mode="outline" @click="loadCoaches">Refresh</base-button>
         <base-button v-if="!isCoach" link to="/register">
           Register as Coach
         </base-button>
@@ -32,12 +32,18 @@ import CoachItem from '../../components/coaches/CoachItem.vue';
 
 export default {
   components: { CoachFilter, CoachItem },
+  created() {
+    this.loadCoaches();
+  },
   data() {
     return {
       activeFilters: { frontend: true, backend: true, career: true },
     };
   },
   methods: {
+    loadCoaches() {
+      this.$store.dispatch('coaches/loadCoaches');
+    },
     setFilters(updatedFilters) {
       this.activeFilters = updatedFilters;
     },
