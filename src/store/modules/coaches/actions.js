@@ -2,7 +2,9 @@ const FIREBASE_URL =
   'https://vue-find-coach-b80f7-default-rtdb.firebaseio.com/coaches';
 
 export default {
-  async loadCoaches(context) {
+  async loadCoaches(context, payload) {
+    if (!payload.forceRefresh && !context.getters.shouldUpdate) return;
+
     const response = await fetch(FIREBASE_URL + '.json');
     const responseData = await response.json();
 
@@ -28,6 +30,7 @@ export default {
       coaches.push(coach);
     }
 
+    context.commit('setFetchTimestamp');
     context.commit('setCoaches', coaches);
   },
   async registerCoach(context, data) {
