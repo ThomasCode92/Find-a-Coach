@@ -4,8 +4,11 @@ const FIREBASE_URL =
 export default {
   async fetchRequests(context) {
     const coachId = context.rootGetters.userId;
+    const token = context.rootGetters.token;
 
-    const response = await fetch(FIREBASE_URL + `/${coachId}.json`);
+    const response = await fetch(
+      FIREBASE_URL + `/${coachId}.json?auth=${token}`
+    );
     const responseData = await response.json();
 
     if (!response.ok) {

@@ -35,6 +35,8 @@ export default {
   },
   async registerCoach(context, data) {
     const userId = context.rootGetters.userId;
+    const token = context.rootGetters.token;
+
     const coachData = {
       firstName: data.firstname,
       lastName: data.lastname,
@@ -43,10 +45,13 @@ export default {
       hourlyRate: data.rate,
     };
 
-    const response = await fetch(FIREBASE_URL + `/${userId}.json`, {
-      method: 'PUT',
-      body: JSON.stringify(coachData),
-    });
+    const response = await fetch(
+      FIREBASE_URL + `/${userId}.json?auth=${token}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(coachData),
+      }
+    );
 
     if (!response.ok) {
       // error...
